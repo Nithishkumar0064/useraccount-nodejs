@@ -1,0 +1,38 @@
+@Library('sharedlibrary')_
+
+pipeline {
+    environment {
+        dockerImage = "harigangaiah/useraccount-nodejs"
+        branchName = "main"
+        dockerTag = "ver-${BUILD_NUMBER}"
+        helmChartName="nodejs-useraccount"
+    }
+    
+    agent none
+    stages {
+        stage('Git-Checkout') {              
+            steps {
+                gitCheckout('https://github.com/harigangaiah/useraccount-nodejs.git', 'main', 'githubCred')
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                dockerImageBuild('$dockerImage', '$dockerTag')
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                dockerHubImagePush('$dockerImage', '$dockerTag', 'dockerhubCred')
+            }
+        }
+
+        stage('Kubernetes Deploy') {
+            steps {
+                kubernetesHelmDeploy('$dockerImage', '$dockerTag', '$helmChartName')
+            }
+        }
+
+    }
+}
