@@ -1,0 +1,11 @@
+name: nodejs-useraccount
+
+deployment:
+  replicas: 3
+  image: artisantek/useraccount
+  tag: version1
+  port: 3080
+
+service:
+  clusterIPPort: 80
+  nodePort: 31080
