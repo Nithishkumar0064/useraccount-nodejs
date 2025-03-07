@@ -14,9 +14,41 @@ spec:
       labels:
         app: {{ .Values.name }}
     spec:
+      volumes:
+        - name: pv-volume
+          persistentVolumeClaim:
+          claimName: static-pvc
       containers:
       - image: {{ .Values.deployment.image }}:{{ .Values.deployment.tag }}
         imagePullPolicy: Always
         name: {{ .Values.name }}
         ports:
         - containerPort: {{ .Values.deployment.port}}
+        volumeMounts:
+        - mountPath: "/home"
+          name: pv-volume
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: static-pv
+spec:
+  capacity:
+    storage: 2Gi
+  hostPath:
+    path: /home/ubuntu/static
+  storageClassName: static
+  accessModes:
+  - ReadWriteOnce
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: static-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: static
+  accessModes:
+  - ReadWriteOnce
