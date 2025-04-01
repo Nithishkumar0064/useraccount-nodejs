@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Git-Checkout') {              
             steps {
-                gitCheckout('https://github.com/harigangaiah/useraccount-nodejs.git', 'main', 'githubCred')
+              git branch: 'main', url: 'https://github.com/Nithishkumar0064/useraccount-nodejs.git'
             }
         }
 
