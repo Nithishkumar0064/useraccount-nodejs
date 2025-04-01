@@ -2,7 +2,7 @@
 
 pipeline {
     environment {
-        dockerImage = "harigangaiah/useraccount-nodejs"
+        dockerImage = "nithishnithi/useraccount-nodejs"
         branchName = "main"
         dockerTag = "ver-${BUILD_NUMBER}"
         helmChartName="nodejs-useraccount"
